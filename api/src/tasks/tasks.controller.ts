@@ -9,9 +9,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto.js';
+import { ListTasksQueryDto } from './dto/list-tasks-query.dto.js';
 import { UpdateTaskDto } from './dto/update-task.dto.js';
 import { TasksService } from './tasks.service.js';
 import { AuthGuard } from '../auth.guard.js';
+import { StrictQuery } from '../strict-query.decorator.js';
 
 @Controller('tasks')
 @UseGuards(AuthGuard)
@@ -21,8 +23,8 @@ export class TasksController {
   ) {}
 
   @Get()
-  findAll() {
-    return this.tasksService.findAll();
+  findAll(@StrictQuery() query: ListTasksQueryDto) {
+    return this.tasksService.findAll(query);
   }
 
   @Get(':id')
@@ -32,10 +34,7 @@ export class TasksController {
 
   @Post()
   create(@Body() body: CreateTaskDto) {
-    return this.tasksService.create(
-      body.title,
-      body.description ?? '',
-    );
+    return this.tasksService.create(body);
   }
 
   @Patch(':id')

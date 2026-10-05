@@ -1,4 +1,6 @@
 import { IsBoolean, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsEnum } from 'class-validator';
+import { TaskStatus } from '../task.entity.js';
 
 export class UpdateTaskDto {
   @IsOptional()
@@ -15,4 +17,8 @@ export class UpdateTaskDto {
   @IsOptional()
   @IsBoolean()
   completed?: boolean;
+
+  @IsOptional()
+  @IsEnum(TaskStatus)
+  status?: TaskStatus;
 }
